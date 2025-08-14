@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:  #This is the metadata for the replicaset
+  name: myapp-deployment
+  labels:   #This label and template label should match
+    app: myappnew
+    type: dev
+    owner: dipendra
+spec:
+  replicas: 5 #Now this will create 5 replicas using template
+  selector:
+    matchLabels: 
+      owner: dipendra #Manage all the pods with owner: dipendra
+  template:
+    metadata:  #This is the metadata for the pod/template
+      labels: 
+        owner: dipendra
+        app: myappnew
+        type: dev
+    spec:    #Spec for the pod
+      containers:
+        - name: mynewnginxapp
+          image: nginx:1.29.0
+          ports:
+            - containerPort: 80
+
+      
+      
+    
