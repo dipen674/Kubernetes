@@ -1,0 +1,12 @@
+# Use the official nginx image as the base
+FROM nginx:1.29.0
+
+# Install wget and unzip
+RUN apt-get update && apt-get install -y wget unzip && rm -rf /var/lib/apt/lists/*
+
+# Download, verify, unzip, and copy the template files
+RUN cd /tmp && \
+    wget https://www.tooplate.com/zip-templates/2129_crispy_kitchen.zip && \
+    unzip -o 2129_crispy_kitchen.zip && \
+    [ -d "2129_crispy_kitchen" ] && cp -r 2129_crispy_kitchen/* /usr/share/nginx/html/ || { echo "Template directory not found"; exit 1; } && \
+    rm -rf 2129_crispy_kitchen.zip 2129_crispy_kitchen

@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment
+  labels:
+    app: myappnew
+    type: dev
+    owner: dipendra
+spec:
+  replicas: 3  # Reduced for Minikube; adjust as needed
+  selector:
+    matchLabels:
+      app: myappnew
+  template:
+    metadata:
+      labels:
+        app: myappnew
+        type: dev
+        owner: dipendra
+    spec:
+      containers:
+      - name: mynewnginxapp
+        image: deependrabhatta/nginx_app:v2
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "256Mi"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
